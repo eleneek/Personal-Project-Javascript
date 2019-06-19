@@ -1,5 +1,8 @@
-import {Validator} from  './validator.mjs'
-export class TeachersModel {
+import {Validator} from  './validator'
+import {generateID} from './generateId'
+import {teacherSchema} from './schemas/teacherSchema'
+
+class TeachersModel {
 
     constructor() {
         this._teachers = new Map();
@@ -7,8 +10,7 @@ export class TeachersModel {
     
     async add(teacher) {
         Validator.validate(teacher,teacherSchema)
-        Validator.validate2(teacher)
-        const id = '_' + Math.random().toString(16).substr(2, 9);
+        const id = generateID();
         this._teachers.set(id, teacher);
         return id
     }
@@ -18,8 +20,7 @@ export class TeachersModel {
     }
 
     async update(id, teacher) {
-        Validator.validate(teacher,teacherSchema)
-        Validator.validate2(teacher)
+        Validator.validate(teacher,teacherSchema,true)
         return this._teachers.set(id, teacher);
     }
 
@@ -29,31 +30,4 @@ export class TeachersModel {
 
 }
 
-
-const teacherSchema = {
-    "name": {
-        "first": "string",
-        "last": "string"
-    },
-    "image": "string",
-    "dateOfBirth": "string", // format date
-    "emails": [
-        {
-        "email": "string",
-        "primary": "boolean"
-        }
-    ],
-    "phones": [
-        {
-        "phone": "string",
-        "primary": "boolean"
-        }
-    ],
-    "sex": "string", // male or female
-    "subjects": [
-        {
-        "subject": "string"
-        }
-    ],
-    "description": "string",
-  };
+export {TeachersModel}

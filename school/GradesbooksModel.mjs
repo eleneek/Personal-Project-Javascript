@@ -1,3 +1,6 @@
+import {Validator} from  './validator'
+import {generateID} from './generateId'
+import {schemaRecord} from './schemas/recordSchema'
 class GradesbooksModel {
 
     constructor(groups, teachers, LMS) {
@@ -8,7 +11,10 @@ class GradesbooksModel {
     }
 
     async add(level, groupID) {
-        const id = Symbol();
+        if (!level || typeof level !=='number') {
+            throw new Error('Level should be a Number!')
+        }
+        const id = generateID();
         this.gradeBook.set( id, { level, groupID, records: [] });
         
         return id;
@@ -19,6 +25,7 @@ class GradesbooksModel {
     }
 
     async addRecord(id, record) {
+        Validator.validate(record,schemaRecord)
         this.gradeBook.get(id).records.push( record );
     }
 
@@ -59,3 +66,4 @@ class GradesbooksModel {
 }
 
 export { GradesbooksModel };
+

@@ -1,4 +1,5 @@
-import { Validator } from  './validator.mjs'
+import { Validator } from  './validator'
+import {generateID} from './generateId'
 
 class SubjectsModel {
 
@@ -6,7 +7,7 @@ class SubjectsModel {
         
         Validator.validate(subject, schema);
 
-        this.id = '_' + Math.random().toString(36).substr(2, 9);
+        this.id = generateID()
 
         subjects.set(this.id, subject);
 

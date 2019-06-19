@@ -1,4 +1,6 @@
-import {Validator} from  './validator.mjs'
+import {Validator} from  './validator'
+import {generateID} from './generateId'
+import {pupilsSchema} from './schemas/pupilsSchema'
 export class PupilsModel {
 
     constructor() {
@@ -7,8 +9,7 @@ export class PupilsModel {
     
     async add(pupil) {
         Validator.validate(pupil,pupilsSchema)
-        Validator.validate2(pupil)
-        const id = '_' + Math.random().toString(16).substr(2, 9);
+        const id = generateID();
         this.pupils.set(id, pupil);
                 
         return id
@@ -19,8 +20,7 @@ export class PupilsModel {
     }
 
     async update(id, pupil) {
-        Validator.validate(pupil,pupilsSchema)
-        Validator.validate2(pupil)
+        Validator.validate(pupil,pupilsSchema,true)
         return this.pupils.set(id, pupil);
     }
 
@@ -29,21 +29,3 @@ export class PupilsModel {
     }
 
 }
-
-
-const pupilsSchema = {
-    "name": {
-      "first": "string",
-      "last": "string"
-    },
-    "image": "string",
-    "dateOfBirth": "string", // format date
-    "phones": [
-      {
-        "phone": "string",
-        "primary": "boolean"
-      }
-    ],
-    "sex": "string", // male OR female
-    "description": "string"
-  }

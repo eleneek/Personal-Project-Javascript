@@ -1,3 +1,4 @@
+import {generateID} from './generateId'
 class GroupsModel {
 
     constructor(pupil){
@@ -6,8 +7,9 @@ class GroupsModel {
     }
 
     checkvalidation(obj){
-        if(typeof obj != "number") 
-        throw new Error('Invalid Parameter!!!');
+        if(typeof obj != "number") {
+            throw new Error('Invalid Parameter!!!');
+        }
     }
 
     newerror(id){
@@ -22,7 +24,7 @@ class GroupsModel {
     async add(room){
         this.checkvalidation(room);
         
-        const id = Symbol();
+        const id = generateID();
         this.groups.set(id, { room, students: new Set() });
 
         return id;

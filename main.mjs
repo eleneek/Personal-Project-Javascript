@@ -5,7 +5,7 @@ import {
     PupilsModel,
     GroupsModel,
     GradesbooksModel
-} from './school/index.mjs';
+} from './school';
 
 const teacherSchema = { name: { first: 'elene', last: 'kvaratskhelia' }, image: "safhjevfbh", dateOfBirth: '10-03-2000',
     emails: [{ email: 'e.kvara@gmail.com', primary: true }],
@@ -18,6 +18,11 @@ const pupilSchema = { name: { first: 'elene', last: 'kvaratskhelia' }, image: "s
     sex: 'female', description: 'string'
 };
 
+const pupilSchema2 = { name: { first: 'elene', last: 'kvaratskhelia' },
+    phones: [{ phone: '12314253564561', primary: false}, { phone: '12314253564569', primary: true}],
+    sex: 'female', description: 'string'
+};
+
 (async () => {
     const history = new SubjectsModel({
         title: 'History', lessons: 24, description:'123'
@@ -26,15 +31,19 @@ const pupilSchema = { name: { first: 'elene', last: 'kvaratskhelia' }, image: "s
         title: 'Biology', lessons: 24, description:'123'
     });
 
+
+
     const LMS = new LMSModel();
     await LMS.add(history);
     await LMS.add(biology);
-
     const teacher = new TeachersModel();
     const teacherID = await teacher.add(teacherSchema);
     
     const pupil = new PupilsModel();
     const pupulId = await pupil.add(pupilSchema);
+    const updatePupil = await pupil.update(pupulId,pupilSchema2)
+    console.log(await pupil.read(pupulId));
+    
     
     const pupulId2 = await pupil.add(pupilSchema);
     
@@ -55,5 +64,5 @@ const pupilSchema = { name: { first: 'elene', last: 'kvaratskhelia' }, image: "s
 
     const oliver = await grade.read(gradebook, pupulId);
     const all = await grade.readAll(gradebook);
-    console.log(all);
+    console.log(oliver);
 })()
